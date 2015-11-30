@@ -4,18 +4,20 @@ defmodule Words do
 
   Words are compared case-insensitively.
   """
+
+  @doc """
+  Regular expression to find words in multiple languages.
+  """
+  @regex ~r/[a-zA-Z0-9ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜŸäëïöüŸçÇŒœßØøÅåÆæÞþÐð-]+/
+
   @spec count(String.t) :: map()
   def count(sentence) do
-    sentence = String.downcase(sentence)
-
-    words = Enum.concat(Regex.scan(~r/[a-zA-Z0-9ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜŸäëïöüŸçÇŒœßØøÅåÆæÞþÐð-]+/, sentence))
-
-    hashDict = Enum.reduce(words, Map.new, fn(word, dict) ->
-      Map.update(dict, word, 1, fn(value) ->
-        value + 1
-      end)
-    end)
-
-    hashDict
+    Regex.scan(@regex, String.downcase(sentence))
+    |> Enum.concat
+    |> Enum.reduce(Map.new, fn(word, dict) ->
+        Map.update(dict, word, 1, fn(value) ->
+          value + 1
+        end)
+       end)
   end
 end
