@@ -8,9 +8,14 @@ defmodule Words do
   def count(sentence) do
     sentence = String.downcase(sentence)
 
-    dict = dict_impl.new
-    words = String.split(sentence, " ")
+    words = Enum.concat(Regex.scan(~r/[a-zA-Z0-9ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜŸäëïöüŸçÇŒœßØøÅåÆæÞþÐð-]+/, sentence))
 
-    dict = Dict.put(dict, :hello, :world)
+    hashDict = Enum.reduce(words, Map.new, fn(word, dict) ->
+      Map.update(dict, word, 1, fn(value) ->
+        value + 1
+      end)
+    end)
+
+    hashDict
   end
 end
