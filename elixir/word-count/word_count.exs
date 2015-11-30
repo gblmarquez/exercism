@@ -9,6 +9,8 @@ defmodule Words do
     sentence = String.downcase(sentence)
 
     dict = dict_impl.new
-    tokens = String.split(sentence, " ")
+    words = String.split(sentence, " ")
+
+    dict = Dict.put(dict, :hello, :world)
   end
 end
