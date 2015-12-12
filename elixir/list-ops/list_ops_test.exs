@@ -34,7 +34,7 @@ defmodule ListOpsTest do
     assert L.reverse([]) == []
   end
 
-  @tag :pending
+  tag :pending
   test "reverse of normal list" do
     assert L.reverse([1,3,5,7]) == [7,5,3,1]
   end
