@@ -8,21 +8,26 @@ defmodule ListOps do
 
   @spec count(list) :: non_neg_integer
   def count([]), do: 0
-  def count([head|tail]), do: 1 + count(tail)
+  def count([_ | tail]), do: 1 + count(tail)
 
   @spec reverse(list) :: list
   def reverse(l), do: foldLeft(l, [], fn (x, acc) -> [x | acc] end)
 
   def foldLeft([], acc, _f), do: acc
   def foldLeft([h | t], acc, f), do: foldLeft(t, f.(h, acc), f)
-  
+
   @spec map(list, (any -> any)) :: list
-  def map([], f), do: []
+  def map([], _), do: []
   def map([head | tail], f), do: [ f.(head) | map(tail, f) ]
 
   @spec filter(list, (any -> as_boolean(term))) :: list
-  def filter(l, f) do
-
+  def filter([], _), do: []
+  def filter([head | tail], f) do
+    if f.(head) === true do
+      [ head | filter(tail, f) ]
+    else
+      filter(tail, f)
+    end
   end
 
   @type acc :: any
