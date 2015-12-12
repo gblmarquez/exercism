@@ -8,16 +8,24 @@ defmodule Words do
   @doc """
   Regular expression to find words in multiple languages.
   """
-  @regex ~r/[a-zA-Z0-9ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜŸäëïöüŸçÇŒœßØøÅåÆæÞþÐð-]+/
+  @regex ~r/[\p{L}\p{N}-]+/u
 
   @spec count(String.t) :: map()
   def count(sentence) do
-    Regex.scan(@regex, String.downcase(sentence))
+    find_words(String.downcase(sentence))
+    |> aggregate_words
+  end
+
+  def find_words(sentence) do
+    Regex.scan(@regex, sentence)
     |> Enum.concat
-    |> Enum.reduce(Map.new, fn(word, dict) ->
-        Map.update(dict, word, 1, fn(value) ->
-          value + 1
-        end)
-       end)
+  end
+
+  def aggregate_words(words) do
+    Enum.reduce(words, %{ }, fn(word, dict) ->
+      Map.update(dict, word, 1, fn(value) ->
+        value + 1
+      end)
+     end)
   end
 end
