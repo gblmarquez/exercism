@@ -8,14 +8,15 @@ defmodule Anagram do
     base_chars = String.codepoints(String.downcase(base))
 
     candidates
-      |> Enum.filter(fn(x) -> String.length(x) == base_count end)
-      |> Enum.filter(fn(x) -> anagram(x, base_chars) end)
+      |> Enum.filter(&(String.length(&1) == base_count))
+      |> Enum.filter(&(anagram(&1, base_chars)))
       |> Enum.uniq
   end
 
   defp anagram(word, source_chars) do
     word_chars = String.codepoints(String.downcase(word))
     source_chars !== word_chars
-      && Enum.sort(word_chars) === Enum.sort(source_chars)
+      &&
+    Enum.sort(word_chars) === Enum.sort(source_chars)
   end
 end
