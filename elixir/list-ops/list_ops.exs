@@ -43,8 +43,9 @@ defmodule ListOps do
   end
 
   @spec concat([[any]]) :: [any]
-  def concat([]), do: []
-  def concat([head | tail]) when is_list(head) do
-    append(head, concat(tail))
+  def concat(l), do: _concat(l)
+  defp _concat([]), do: []
+  defp _concat([head | tail]) do
+    append(head, _concat(tail))
   end
 end
