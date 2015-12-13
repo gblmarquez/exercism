@@ -23,9 +23,7 @@ defmodule Words do
 
   def aggregate_words(words) do
     Enum.reduce(words, %{ }, fn(word, dict) ->
-      Map.update(dict, word, 1, fn(value) ->
-        value + 1
-      end)
-     end)
+      Map.update(dict, word, 1, &(&1 + 1))
+    end)
   end
 end
